@@ -1,0 +1,99 @@
+---
+title: "CS Salary"
+author: "Harrison Grogan"
+date: "5/1/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r, warning=FALSE, include=FALSE}
+library(tidyr)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(data.table)
+library(corrgram)
+library(gridExtra) 
+library(knitr)
+library(heplots)
+library(GGally)
+library(reshape)
+library(rsconnect)
+library(shiny)
+library(rmarkdown)
+```
+
+## ABSTRACT
+## My project is about Computer Science Salaries and what the difference is into how much you are paid. This is important because it is never a bad idea to educate yourself on how certain aspects of your line of work are decided. I saw someone answer someone else's question about whether age has anything to do with people losing their jobs in the Computer Science field. The person went on to explain that a lot of Computer Science workers lose their job around 50, not due to ageism, but due to people just slacking off and not keeping up with their programming skills. My research question is: Is there any link to how someone is paid when it comes to their age? I got my data from a website called Data USA. I analyzed my data through R and I found that age has little to do with whether or not someone loses their job, but as the data showed, as people aged, they got more experience and skilled, allowing them to get a pay increase. So, what I saw is that age has something to do with salary, just not job loss. Of course, a person who is older may lose their job, but it's probably from slacking off or lack of "keeping up with tech".
+
+
+## Introduction
+## My name is Harrison Grogan and I did my R project over how age effects salary in the Computer Science field of work. 
+
+## Literature Review
+## This needs to be addressed because you'll want to know how to keep yourself in good standing and to be able to know how to keep up. As someone named Thomas B Walsh described to someone on Quora; "A lot of people lose their jobs around age 50, but it wasn't about ageism. The work is very demanding. Some people tend to begin to feel entitled and slack off." (Walsh B Thomas, Quora) He said that he personally burned out when he was 56. I read an article by Howard Williams, the article talked about how most Baby Boomers don't apply out of fear of being too old. Howard also mentioned how 61 percent of developers over 45 are concerned that their age is limiting their career options. Most developers are between the ages of 22-29. Basically, a developer reaches their mid-40s, they’re likely to face career worries. Howard goes on to talk about how the tech industry favors younger developers. One of the biggest reasonings is because older developers, while having more experience, tend to cost more then the younger ones. Personally, I agree with Thomas, the reason someone is fired probably won't be because of their age, but, as Thomas said, because of a feeling of entitlement and/or slacking off. 
+
+## Data
+## The application that I used to download the data is called ParseHub. ParseHub is a really good application when it comes to data mining. It's easy to use and very fast. The way to use ParseHub is by putting the link to the page/website you want to data mine from and then you select the data, but you don't select the data one-by-one, you select two pieces of data and it auto fills the rest for you, then when you're ready you can download it into a csv file and transfer it to R.
+
+## Methodology
+## After I read my csv file into R, I then proceed to check the contents of the file and noticed that there were a few columns there that I did not need, so I began by taking the columns out using the subset function with -c(...). Then I proceeded to analyze the data using a scatterplot graph. I used the lm() function to create a linear model and look over the data there. I then used the slope-intercept formula as a way to predict the salary using years of experience. Example: 605.4*12 + 61027 = 68291.8, with 12 being years of experience.
+
+## Results
+## As mentioned earlier in Abstact, the results that I found weren't too surprising from what I read in the Quora answer from Thomas B Walsh. The data showed that as years go by people would see a pay increase steadily. This does not include promotions, company, and the size/cost of the city/town that a person lives in. The scatterplot is nice to see a kind of visual representation of the data, but not as telling as the slope-intercept formula and linear model, which with the curve that the scatterplot shows it almost, in a way, works against the linear model. So, the take away is to focus more on the linear model than the scatterplot graph.
+
+## Implications
+## As mentioned in the Results section; the slope-intercept formula, obtained from the linear model, isn't very accurate because it is only count age and not promotions, company, and/or size/cost of the city or town a person lives in, but it gives people a good idea of what their salary may be years from now. 
+
+## Conclusion
+## What I have achieved is showing that age does have a factor in the salary someone will obtain after working at a company for maybe, 5, 10, 15+ years. Also, keep your skills in programming up and knowledge of tech fresh. 
+
+## References
+## Walsh B T. (2015).  Is it true that computer science people only have good jobs till the age of 35-40? Quora. https://www.quora.com/Is-it-true-that-computer-science-people-only-have-good-jobs-till-the-age-of-35-40
+
+## N/A. (2019). Computer Science. Data USA. https://datausa.io/profile/cip/computer-science-110701#demographics
+
+## Williams H. (March 29, 2019). Ageism in tech: the not-so-invisible age limit developers face. https://bdtechtalks.com/2019/03/29/ageism-in-tech-age-limit-software-developers-face/https://bdtechtalks.com/2019/03/29/ageism-in-tech-age-limit-software-developers-face/
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## This helps us read in and clean our data
+```{r}
+salaryAge <- read_csv("C:/Users/groga/OneDrive/Desktop/Workforce_Age.csv")
+salaryAge
+
+salaryAge_df = subset(salaryAge, select = -c(`ID Age`, `ID Year`, `Workforce Status`, `Record Count`, CIP2, `ID CIP2`, share, `Total Population MOE Appx`, `Average Wage Appx MOE`, `ID Workforce Status`, Year))
+salaryAge_df
+```
+
+## This gives us a summary of our data
+```{r}
+lapply(salaryAge_df, FUN=summary)
+```
+
+## The scatterplot for the data with a smooth line for ease of read
+```{r}
+ggplot(salaryAge_df, aes(x = Age, y = `Average Wage`)) + geom_point() + stat_smooth()
+```
+
+##This here is the linear model that we will base my slope-intercept equation off of
+```{r}
+lin <- lm(`Average Wage` ~ Age ,salaryAge_df)
+summary(lin)
+```
+
+## This has 12 included into the equation as "years of experience"
+```{r}
+predicted_salary = 605.4*12 + 61027
+predicted_salary
+```
+
+
+
+
+
+
